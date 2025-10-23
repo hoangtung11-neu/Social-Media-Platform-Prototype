@@ -35,7 +35,5 @@ A modern social media platform prototype built with pure HTML, CSS, and JavaScri
 - **Moderator**: Content moderation (post verification, deletion)
 - **User**: Basic social features (posts, friends, messages)
 
-## 🌐 Live Demo
 
-[View Live Demo](https://YOUR_USERNAME.github.io/social-media-prototype)
 
