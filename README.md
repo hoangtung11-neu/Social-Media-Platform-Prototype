@@ -39,10 +39,3 @@ A modern social media platform prototype built with pure HTML, CSS, and JavaScri
 
 [View Live Demo](https://YOUR_USERNAME.github.io/social-media-prototype)
 
-## 📸 Screenshots
-
-*(You can add screenshots later)*
-
-## 👨‍💻 Developer
-
-Your Name - [Your GitHub Profile](https://github.com/YOUR_USERNAME)
