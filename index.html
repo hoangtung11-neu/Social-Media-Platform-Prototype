@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialHub - Mạng xã hội cao cấp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <span>SocialHub</span>
+            </div>
+            <div class="loading-spinner"></div>
+            <p>Đang tải dữ liệu...</p>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-users"></i>
+                    <span>SocialHub</span>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="username" id="currentUsername">john_doe</span>
+                        <span class="user-role" id="currentUserRole">Người dùng</span>
+                    </div>
+                </div>
+                
+                <div class="user-selector">
+                    <select id="activeUserSelect" class="user-dropdown">
+                        <option value="">Chọn người dùng...</option>
+                    </select>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn-icon" id="themeToggle" title="Chuyển đổi chế độ sáng/tối">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn-icon" id="refreshBtn" title="Làm mới">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#users" class="nav-item active" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </a>
+                <a href="#createPost" class="nav-item" data-section="createPost">
+                    <i class="fas fa-edit"></i>
+                    <span>Tạo bài viết</span>
+                </a>
+                <a href="#posts" class="nav-item" data-section="posts">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Bài viết</span>
+                    <span class="badge" id="postCount">0</span>
+                </a>
+                <a href="#friends" class="nav-item" data-section="friends">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Bạn bè</span>
+                    <span class="badge" id="friendRequestCount">0</span>
+                </a>
+                <a href="#messages" class="nav-item" data-section="messages">
+                    <i class="fas fa-comments"></i>
+                    <span>Tin nhắn</span>
+                    <span class="badge" id="messageCount">0</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalUsers">0</span>
+                    <span class="stat-label">Người dùng</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalPosts">0</span>
+                    <span class="stat-label">Bài viết</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="onlineUsers">0</span>
+                    <span class="stat-label">Đang online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Users Section -->
+            <section id="users" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Quản lý người dùng</h2>
+                    <div class="section-actions">
+                        <button class="btn-primary" id="addUserBtn">
+                            <i class="fas fa-user-plus"></i> Thêm người dùng
+                        </button>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Tìm kiếm người dùng...">
+                    </div>
+                    <div id="userList" class="user-grid"></div>
+                </div>
+            </section>
+
+            <!-- Create Post Section -->
+            <section id="createPost" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-edit"></i> Tạo bài viết mới</h2>
+                </div>
+                <div class="section-content">
+                    <div class="post-creator">
+                        <div class="post-type-selector">
+                            <label>Loại bài viết:</label>
+                            <select id="postType" class="form-select">
+                                <option value="text">📝 Văn bản</option>
+                                <option value="image">🖼️ Hình ảnh</option>
+                                <option value="video">🎥 Video</option>
+                                <option value="poll">📊 Bình chọn</option>
+                            </select>
+                        </div>
+
+                        <div class="post-content-area">
+                            <textarea id="postContent" placeholder="Bạn đang nghĩ gì?" rows="4"></textarea>
+                            <div class="char-counter">
+                                <span id="charCount">0</span>/500
+                            </div>
+                        </div>
+
+                        <div id="postExtraFields" class="extra-fields">
+                            <!-- Dynamic fields based on post type -->
+                        </div>
+
+                        <div class="post-actions">
+                            <div class="action-buttons">
+                                <button class="btn-icon" title="Thêm hình ảnh">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <button class="btn-icon" title="Thêm video">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                                <button class="btn-icon" title="Thêm cảm xúc">
+                                    <i class="fas fa-smile"></i>
+                                </button>
+                            </div>
+                            <button id="createPostBtn" class="btn-primary">
+                                <i class="fas fa-paper-plane"></i> Đăng bài
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Posts Section -->
+            <section id="posts" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-newspaper"></i> Bài viết gần đây</h2>
+                    <div class="section-actions">
+                        <select id="postFilter" class="form-select">
+                            <option value="all">Tất cả bài viết</option>
+                            <option value="verified">Đã xác thực</option>
+                            <option value="myPosts">Bài viết của tôi</option>
+                            <option value="friends">Bài viết bạn bè</option>
+                        </select>
+                        <button class="btn-secondary" id="sortPosts">
+                            <i class="fas fa-sort"></i> Sắp xếp
+                        </button>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div id="postList" class="posts-feed"></div>
+                    <div class="load-more">
+                        <button id="loadMorePosts" class="btn-secondary">
+                            <i class="fas fa-plus"></i> Tải thêm bài viết
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Friends Section -->
+            <section id="friends" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-friends"></i> Bạn bè & Lời mời</h2>
+                </div>
+                <div class="section-content">
+                    <div class="friends-container">
+                        <div class="friends-tabs">
+                            <button class="tab-btn active" data-tab="friends-list">Bạn bè</button>
+                            <button class="tab-btn" data-tab="friend-requests">Lời mời</button>
+                            <button class="tab-btn" data-tab="suggestions">Gợi ý</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div id="friends-list" class="tab-pane active">
+                                <div id="friendList" class="friends-grid"></div>
+                            </div>
+                            <div id="friend-requests" class="tab-pane">
+                                <div id="friendRequests" class="requests-list"></div>
+                            </div>
+                            <div id="suggestions" class="tab-pane">
+                                <div id="friendSuggestions" class="suggestions-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="messages" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-comments"></i> Tin nhắn</h2>
+                    <div class="section-actions">
+                        <button class="btn-primary" id="newMessageBtn">
+                            <i class="fas fa-plus"></i> Tin nhắn mới
+                        </button>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="messages-container">
+                        <div class="conversations-list">
+                            <div class="conversations-header">
+                                <h3>Cuộc trò chuyện</h3>
+                            </div>
+                            <div id="conversations" class="conversations"></div>
+                        </div>
+                        
+                        <div class="message-area">
+                            <div id="selectedConversation" class="selected-conversation">
+                                <div class="conversation-header">
+                                    <div class="conversation-info">
+                                        <div class="conversation-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="conversation-details">
+                                            <span class="conversation-name">Chọn một cuộc trò chuyện</span>
+                                            <span class="conversation-status">Để bắt đầu trò chuyện</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="messageThread" class="message-thread">
+                                    <div class="empty-state">
+                                        <i class="fas fa-comments"></i>
+                                        <p>Chọn một cuộc trò chuyện để xem tin nhắn</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="message-input-container">
+                                    <div class="message-input">
+                                        <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." disabled>
+                                        <button id="sendMessageBtn" class="btn-primary" disabled>
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm người dùng mới</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="form-group">
+                        <label>Tên người dùng:</label>
+                        <input type="text" id="newUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="newEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vai trò:</label>
+                        <select id="newUserRole" required>
+                            <option value="User">Người dùng</option>
+                            <option value="Moderator">Điều hành viên</option>
+                            <option value="Admin">Quản trị viên</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelUserBtn">Hủy</button>
+                <button class="btn-primary" id="saveUserBtn">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
